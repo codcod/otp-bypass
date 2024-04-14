@@ -1,0 +1,101 @@
+[project]
+name = "bypass"
+version = "0.1.0"
+description = "Bypass OTP with Twilio"
+authors = [
+    { name = "codcod", email = "nikos@linux.com" }
+]
+dependencies = [
+    "aiohttp>=3.9.3",
+    "gunicorn>=21.2.0",
+    "orjson>=3.10.0",
+    "python-dotenv>=1.0.1",
+    "twilio>=9.0.4",
+]
+readme = "README.md"
+requires-python = ">= 3.12"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+dev-dependencies = [
+    "codespell>=2.2.6",
+    "flake8>=5.0.4",
+    "isort>=5.13.2",
+    "mypy>=1.8.0",
+    "pre-commit-hooks>=4.6.0",
+    "pre-commit>=3.7.0",
+    "pytest-asyncio>=0.21.1",
+    "pytest-cov>=4.1.0",
+    "pytest-coverage>=0.0",
+    "pytest>=7.4.3",
+    "respx>=0.21.1",
+    "yamllint>=1.35.1",
+]
+
+[tool.rye.scripts]
+"server" = "gunicorn bypass.server:make_app --bind=0.0.0.0:80 --workers 2 -k aiohttp.GunicornWebWorker --reload"
+"build-image" = "docker build -t otp-bypass . --load"
+"container" = "docker run -it --rm --name running-otp-bypass -p 80:80 otp-bypass"
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/bypass"]
+
+[tool.isort]
+profile = "black"
+line_length = 88
+auto_identify_namespace_packages = false
+force_single_line = true
+known_first_party = ["bypass"]
+
+[tool.ruff]
+exclude = [
+    ".git",
+    ".mypy_cache",
+    ".ruff_cache",
+    ".venv",
+    "__pypackages__",
+    "build",
+    "dist",
+]
+line-length = 88
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "W", "E", "B", "I", "PL", "C90"]
+ignore = []
+
+fixable = ["ALL"]
+unfixable = ["B"]
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.format]
+quote-style = "single"
+
+[tool.pydocstyle]
+ignore = [
+    "D105",
+    "D107",
+    "D203",
+    "D213",
+]
+
+[tool.pytest.ini_options]
+# https://docs.pytest.org/en/latest/reference/customize.html
+minversion = "6.0"
+addopts = "--doctest-modules -vv --cov=bypass --capture=no --log-cli-level=DEBUG --import-mode=importlib --ignore=tests/bypass tests"
+testpaths = [
+    "tests",
+]
+log_format = "%(asctime)s [%(levelname)-8s] [%(filename)s:%(lineno)s] %(message)s"
+log_date_format = "%H:%M:%S"
+
+# Reminder:
+# '^file1\.py$',   # TOML literal string (single-quotes, no escaping necessary)
+# "^file2\\.py$",  # TOML basic string (double-quotes, backslash and other characters need escaping

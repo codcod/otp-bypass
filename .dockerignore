@@ -1,0 +1,9 @@
+.container-data
+.mypy_cache
+.ruff_cache
+.git
+.venv
+.vscode
+docs
+tests
+.log

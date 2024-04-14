@@ -1,0 +1,22 @@
+{
+    "ToCountry": "US",
+    "ToState": "AL",
+    "SmsMessageSid": "SMxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "NumMedia": "0",
+    "ToCity": "PHENIX CITY",
+    "FromZip": "",
+    "SmsSid": "SMxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "FromState": "",
+    "SmsStatus": "received",
+    "FromCity": "",
+    "Body": "Hello! This text message was sent from command line with JSON file included",
+    "FromCountry": "PL",
+    "To": "+10000000000",
+    "MessagingServiceSid": "MGxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "ToZip": "36869",
+    "NumSegments": "1",
+    "MessageSid": "SMxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "AccountSid": "AC304",
+    "From": "+48000000000",
+    "ApiVersion": "2010-04-01"
+}
