@@ -5,8 +5,9 @@ from aiohttp.web_request import Request
 from aiohttp.web_response import Response
 from twilio.twiml.messaging_response import MessagingResponse
 
+from . import queries
 from .connector import TwilioClient
-from .json import dumps
+from .json import dumps, jsonify_rows
 
 routes = web.RouteTableDef()
 
@@ -33,3 +34,13 @@ async def fetch_phones(req: Request) -> Response:
     tc: TwilioClient = req.app['twilio_connect']
     phones = await tc.get_phone_numbers(limit=1)
     return web.json_response(phones, dumps=dumps)
+
+
+@routes.get(r'/requests')
+async def fetch_requests(req: Request) -> Response:
+    engine = req.app['engine']
+
+    async with engine.begin() as conn:
+        records = await queries.fetch_requests(conn)
+
+    return web.json_response({'rows': jsonify_rows(records)}, dumps=dumps)

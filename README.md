@@ -5,6 +5,11 @@
 Little server that helps to bypass OTP using Twilio account.
 
     $ rye sync
+
+    $ rye run db:schema
+    $ rye run db:seed
+    $ # rye run db:reset
+
     $ rye run server
     $ rye run build-image
     $ rye run container

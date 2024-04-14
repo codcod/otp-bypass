@@ -2,6 +2,7 @@ from functools import partial
 
 import orjson
 from aiohttp.web_response import Response
+from sqlalchemy import Row
 from twilio.rest.api.v2010.account import incoming_phone_number, message
 
 __all__ = ['dumps']
@@ -84,8 +85,28 @@ def default(obj):
         return _list_into_dict(keys, obj)
 
 
-dump = partial(orjson.dumps, default=default)  # returns bytes instead of str
+dump = partial(
+    orjson.dumps, default=default, option=orjson.OPT_NON_STR_KEYS
+)  # returns bytes instead of str
 
 
 def dumps(resp: Response) -> str:
     return dump(resp).decode('utf-8')
+
+
+def jsonify_rows(rows: list[Row]):
+    """Jsonify sqlalchemy.Row.
+
+    Different version and easier to read would be:
+
+    .. code-block:: python
+    resp = []
+    for row in rows:
+        resp.append(dict([x for x in zip(row._fields, row)]))
+
+    return resp
+
+    """
+    resp = [dict([x for x in zip(row._fields, row, strict=False)]) for row in rows]
+
+    return resp

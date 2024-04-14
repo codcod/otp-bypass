@@ -11,6 +11,9 @@ dependencies = [
     "orjson>=3.10.0",
     "python-dotenv>=1.0.1",
     "twilio>=9.0.4",
+    "sqlalchemy[asyncio]>=2.0.29",
+    "aiosqlite>=0.20.0",
+    "alembic>=1.13.1",
 ]
 readme = "README.md"
 requires-python = ">= 3.12"
@@ -34,12 +37,17 @@ dev-dependencies = [
     "pytest>=7.4.3",
     "respx>=0.21.1",
     "yamllint>=1.35.1",
+    "ipython>=8.23.0",
 ]
 
 [tool.rye.scripts]
 "server" = "gunicorn bypass.server:make_app --bind=0.0.0.0:80 --workers 2 -k aiohttp.GunicornWebWorker --reload"
 "build-image" = "docker build -t otp-bypass . --load"
 "container" = "docker run -it --rm --name running-otp-bypass -p 80:80 otp-bypass"
+"db:schema" = "alembic upgrade ec5"
+"db:seed" = "alembic upgrade d26"
+"db:reset" = "alembic downgrade base"
+"precommit" = "pre-commit run --all-files"
 
 [tool.hatch.metadata]
 allow-direct-references = true

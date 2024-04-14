@@ -4,6 +4,8 @@ import pathlib
 BASE_DIR = pathlib.Path(__file__).parent.parent.parent
 # PACKAGE_NAME = 'valet'
 
+DB_URI = 'sqlite+aiosqlite:///instance/database.sqlite'
+DB_ECHO = True
 
 LOGGING = {
     'version': 1,
@@ -22,7 +24,7 @@ LOGGING = {
         'console': {'class': 'logging.StreamHandler', 'formatter': 'simple'},
         'file': {
             'class': 'logging.FileHandler',
-            'filename': BASE_DIR / 'server.log',
+            'filename': BASE_DIR / 'instance' / 'server.log',
             'formatter': 'verbose',
             'level': 'DEBUG',
             'mode': 'w',
